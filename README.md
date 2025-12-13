@@ -381,7 +381,7 @@ lsof -i :5173
 ## 📚 Documentation
 
 - [Go Documentation](https://golang.org/doc/)
-- [Gin Framework](https://gin-gonic.com/docs/)
+- [Gin Framework](https://gin-gonic.com/en/docs/)
 - [React Documentation](https://react.dev/)
 - [Vite Guide](https://vitejs.dev/guide/)
 - [Supabase Docs](https://supabase.com/docs)
@@ -391,7 +391,12 @@ lsof -i :5173
 
 ## 👤 Author
 
-**Backend Developer Intern Assignment**
+**V Aditya Teja**  
+Software Developer  
+Pursuing the interest of understanding core computers in a better way
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/vadityateja)  
+[![Resume](https://img.shields.io/badge/Resume-View-green)](https://drive.google.com/drive/folders/1epLxLC2RVqvb91otO4G_bs-iqY0Rt8mi?usp=drive_link)
 
 ---
 
