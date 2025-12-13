@@ -2,6 +2,14 @@
 
 A scalable full-stack application with **Go backend** + **React frontend** + **Supabase** for authentication and database.
 
+## 🌐 Live Demo
+
+**🎯 Try it now:**
+- **Frontend**: Deploy your own on [Vercel](https://vercel.com)
+- **Backend API**: Deploy your own on [Render](https://render.com)
+
+_Deployment instructions below_ ⬇️
+
 ## 📋 Features
 
 ### Backend (Go + Gin)
@@ -386,6 +394,50 @@ lsof -i :5173
 - [Vite Guide](https://vitejs.dev/guide/)
 - [Supabase Docs](https://supabase.com/docs)
 - [Tailwind CSS](https://tailwindcss.com/docs)
+
+---
+
+## 🚀 Deployment Guide
+
+### Deploy Frontend to Vercel
+
+1. **Push your code to GitHub** (already done ✅)
+
+2. **Deploy to Vercel:**
+   - Go to [vercel.com](https://vercel.com)
+   - Click "Add New Project"
+   - Import your GitHub repository
+   - Vercel will auto-detect the `vercel.json` config
+   - Add environment variables:
+     ```
+     VITE_SUPABASE_URL=your-supabase-url
+     VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+     VITE_API_URL=https://your-backend.onrender.com/api/v1
+     ```
+   - Click "Deploy"
+
+### Deploy Backend to Render
+
+1. **Deploy to Render:**
+   - Go to [render.com](https://render.com)
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Render will auto-detect the `render.yaml` config
+   - Add environment variables:
+     ```
+     SUPABASE_URL=your-supabase-url
+     SUPABASE_ANON_KEY=your-supabase-anon-key
+     SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+     JWT_SECRET=your-secret-key
+     PORT=8080
+     ```
+   - Click "Create Web Service"
+
+2. **Update CORS:**
+   - After deployment, update `backend/middleware/common.go` with your Vercel URL
+   - Push changes to trigger auto-redeploy
+
+**Note:** Free tier on Render sleeps after 15 min of inactivity (~30s wake time)
 
 ---
 

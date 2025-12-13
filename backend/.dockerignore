@@ -1,0 +1,9 @@
+.env
+.git
+.gitignore
+*.md
+README.md
+API_TESTING.md
+node_modules
+dist
+frontend
