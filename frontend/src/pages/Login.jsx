@@ -43,6 +43,22 @@ export default function Login() {
               Welcome back
             </h2>
 
+          {/* Server Startup Notice */}
+          <div className="mb-6 rounded-lg bg-amber-50 border-2 border-amber-300 p-4">
+            <div className="flex items-start gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-amber-900 mb-1">⏳ Server Startup Notice</p>
+                <p className="text-xs text-amber-800">
+                  Backend server may take up to <span className="font-semibold">1 minute</span> to start after inactivity. 
+                  Please wait before logging in. Thank you for your patience! 🙏
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Admin Login Credentials Info */}
           <div className="mb-6 rounded-lg bg-blue-50 border-2 border-blue-200 p-4">
             <div className="flex items-start gap-2">
