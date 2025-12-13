@@ -9,6 +9,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
   
   const { signUp } = useAuth()
   const navigate = useNavigate()
@@ -36,7 +37,12 @@ export default function Register() {
       setError(error.message)
       setLoading(false)
     } else {
-      navigate('/login')
+      setSuccess(true)
+      setLoading(false)
+      // Auto redirect after 5 seconds
+      setTimeout(() => {
+        navigate('/login')
+      }, 5000)
     }
   }
 
@@ -51,6 +57,24 @@ export default function Register() {
               Create Account
             </h2>
             <p className="mb-8 text-gray-500">Sign up to get started!</p>
+
+          {success && (
+            <div className="mb-4 rounded-lg bg-green-50 border-2 border-green-400 p-4">
+              <div className="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-green-600 flex-shrink-0">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-green-900 mb-2">✅ Registration Successful!</p>
+                  <p className="text-sm text-green-800">
+                    Please <span className="font-semibold">check your email</span> for a verification link to complete your registration. 
+                    Check your spam folder if you don't see it.
+                  </p>
+                  <p className="text-xs text-green-700 mt-2">Redirecting to login in 5 seconds...</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="mb-4 rounded bg-red-100 p-3 text-sm text-red-700">
