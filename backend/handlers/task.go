@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 
 	"backend-assignment/models"
@@ -321,15 +322,20 @@ func (h *TaskHandler) DeleteTask(c *gin.Context) {
 		// Admin can delete any task - use service role key to bypass RLS
 		url = fmt.Sprintf("%s/rest/v1/tasks?id=eq.%s", h.SupabaseURL, taskID)
 		authKey = h.ServiceRoleKey
+		log.Printf("Admin deleting task %s with service role key", taskID)
 	} else {
 		// Regular users can only delete their own tasks
 		url = fmt.Sprintf("%s/rest/v1/tasks?id=eq.%s&user_id=eq.%s", h.SupabaseURL, taskID, userID.(string))
 		authKey = h.SupabaseKey
+		log.Printf("User %s deleting task %s", userID, taskID)
 	}
 
 	httpReq, _ := http.NewRequest("DELETE", url, nil)
 	httpReq.Header.Set("apikey", authKey)
 	httpReq.Header.Set("Authorization", "Bearer "+authKey)
+	httpReq.Header.Set("Prefer", "return=representation")
+
+	log.Printf("DELETE URL: %s", url)
 
 	client := &http.Client{}
 	resp, err := client.Do(httpReq)
@@ -342,9 +348,34 @@ func (h *TaskHandler) DeleteTask(c *gin.Context) {
 	}
 	defer resp.Body.Close()
 
+	// Read response body to check if any rows were deleted
+	body, _ := io.ReadAll(resp.Body)
+
+	// Check if the response status is OK
+	if resp.StatusCode != http.StatusOK {
+		c.JSON(resp.StatusCode, models.ErrorResponse{
+			Success: false,
+			Error:   fmt.Sprintf("Failed to delete task: %s", string(body)),
+		})
+		return
+	}
+
+	// Check if any rows were deleted (Supabase returns empty array if nothing deleted)
+	var deletedTasks []models.Task
+	json.Unmarshal(body, &deletedTasks)
+
+	if len(deletedTasks) == 0 {
+		c.JSON(http.StatusNotFound, models.ErrorResponse{
+			Success: false,
+			Error:   "Task not found or you don't have permission to delete it",
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, models.Response{
 		Success: true,
 		Message: "Task deleted successfully",
+		Data:    deletedTasks[0],
 	})
 }
 
