@@ -310,7 +310,18 @@ func (h *TaskHandler) DeleteTask(c *gin.Context) {
 	taskID := c.Param("id")
 	userID, _ := c.Get("userID")
 
-	url := fmt.Sprintf("%s/rest/v1/tasks?id=eq.%s&user_id=eq.%s", h.SupabaseURL, taskID, userID.(string))
+	// Check if user is admin
+	isAdmin, _ := h.isUserAdmin(userID.(string))
+
+	var url string
+	if isAdmin {
+		// Admin can delete any task
+		url = fmt.Sprintf("%s/rest/v1/tasks?id=eq.%s", h.SupabaseURL, taskID)
+	} else {
+		// Regular users can only delete their own tasks
+		url = fmt.Sprintf("%s/rest/v1/tasks?id=eq.%s&user_id=eq.%s", h.SupabaseURL, taskID, userID.(string))
+	}
+
 	httpReq, _ := http.NewRequest("DELETE", url, nil)
 	httpReq.Header.Set("apikey", h.SupabaseKey)
 	httpReq.Header.Set("Authorization", "Bearer "+h.SupabaseKey)

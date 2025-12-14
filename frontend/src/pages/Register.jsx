@@ -65,7 +65,7 @@ export default function Register() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div className="flex-1">
-                  <p className="text-sm font-semibold text-green-900 mb-2">✅ Registration Successful!</p>
+                  <p className="text-sm font-semibold text-green-900 mb-2"> Registration Successful!</p>
                   <p className="text-sm text-green-800">
                     Please <span className="font-semibold">check your email</span> for a verification link to complete your registration. 
                     Check your spam folder if you don't see it.
