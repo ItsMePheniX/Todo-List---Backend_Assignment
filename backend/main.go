@@ -31,7 +31,7 @@ func main() {
 
 	// Initialize handlers
 	authHandler := handlers.NewAuthHandler(cfg.SupabaseURL, cfg.SupabaseAnonKey)
-	taskHandler := handlers.NewTaskHandler(cfg.SupabaseURL, cfg.SupabaseAnonKey)
+	taskHandler := handlers.NewTaskHandler(cfg.SupabaseURL, cfg.SupabaseAnonKey, cfg.SupabaseServiceKey)
 	adminHandler := handlers.NewAdminHandler(cfg.SupabaseURL, cfg.SupabaseServiceKey)
 
 	// API v1 routes

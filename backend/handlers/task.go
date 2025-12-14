@@ -13,14 +13,16 @@ import (
 )
 
 type TaskHandler struct {
-	SupabaseURL string
-	SupabaseKey string
+	SupabaseURL    string
+	SupabaseKey    string
+	ServiceRoleKey string
 }
 
-func NewTaskHandler(supabaseURL, supabaseKey string) *TaskHandler {
+func NewTaskHandler(supabaseURL, supabaseKey, serviceRoleKey string) *TaskHandler {
 	return &TaskHandler{
-		SupabaseURL: supabaseURL,
-		SupabaseKey: supabaseKey,
+		SupabaseURL:    supabaseURL,
+		SupabaseKey:    supabaseKey,
+		ServiceRoleKey: serviceRoleKey,
 	}
 }
 
@@ -314,17 +316,20 @@ func (h *TaskHandler) DeleteTask(c *gin.Context) {
 	isAdmin, _ := h.isUserAdmin(userID.(string))
 
 	var url string
+	var authKey string
 	if isAdmin {
-		// Admin can delete any task
+		// Admin can delete any task - use service role key to bypass RLS
 		url = fmt.Sprintf("%s/rest/v1/tasks?id=eq.%s", h.SupabaseURL, taskID)
+		authKey = h.ServiceRoleKey
 	} else {
 		// Regular users can only delete their own tasks
 		url = fmt.Sprintf("%s/rest/v1/tasks?id=eq.%s&user_id=eq.%s", h.SupabaseURL, taskID, userID.(string))
+		authKey = h.SupabaseKey
 	}
 
 	httpReq, _ := http.NewRequest("DELETE", url, nil)
-	httpReq.Header.Set("apikey", h.SupabaseKey)
-	httpReq.Header.Set("Authorization", "Bearer "+h.SupabaseKey)
+	httpReq.Header.Set("apikey", authKey)
+	httpReq.Header.Set("Authorization", "Bearer "+authKey)
 
 	client := &http.Client{}
 	resp, err := client.Do(httpReq)
